@@ -1,0 +1,7 @@
+COMMAND = "command"
+INSTANCE_HASH = "instance_hash"
+
+
+CREATE = "CREATE"
+EXECUTE = "EXEC"
+DELETE = "DELETE"
