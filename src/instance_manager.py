@@ -57,6 +57,9 @@ class InstanceManager(src.Instance):
             raise Exception(e)
 
     def handle(self) -> list:
+        """
+        Handle create and delete container commands
+        """
         if self.command == src.constants.CREATE:
             self.create_instance()
             return [0]

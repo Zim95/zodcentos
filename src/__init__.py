@@ -26,7 +26,7 @@ class InstanceMessage:
             return True
         except json.JSONDecodeError:
             raise json.JSONDecodeError(
-                "Invalid message format. Message needs to have command and instance hash"
+                "Invalid message body format. Message body format is \{'command': '<command>', 'instance_hash': '<instance_hash>'\}"
             )
 
     @staticmethod
