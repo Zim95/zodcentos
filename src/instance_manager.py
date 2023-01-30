@@ -53,9 +53,7 @@ class InstanceManager(src.Instance):
         self.image_tag: str = image_tag
         self.container_name: str = container_name
         self.dockerfile_name: str = dockerfile_name
-        self.filter_container_command: str = filter_container_command.format(
-            self.container_name
-        )
+        self.filter_container_command: str = filter_container_command
 
     def create_instance(self) -> None:
         """
