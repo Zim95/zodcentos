@@ -133,8 +133,9 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
             self.command, self.instance_hash
         )
         super(BaseTestInstanceManager, self).__init__()
-        self.instance_mgr_obj.handle()
+        res: list = self.instance_mgr_obj.handle()
         mock_create_instance.assert_called_with()
+        self.assertEqual(res, [0])
 
         self.command = "DELETE"
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
@@ -142,4 +143,6 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
         super(BaseTestInstanceManager, self).__init__()
         self.instance_mgr_obj.handle()
+        res: list = self.instance_mgr_obj.handle()
         mock_delete_instance.assert_called_with()
+        self.assertEqual(res, [2])
