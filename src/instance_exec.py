@@ -29,6 +29,21 @@ class InstanceExec(src.Instance):
     def __init__(
         self, command: str, instance_hash: str, filter_container_command: str
     ) -> None:
+        """
+        NOTE:
+        For every command we create a new instance. This is so that
+        every command can be executed in a different thread seperately.
+        Thread safety considerations.
+        If we use a single manager then there might be a time where
+        we might need to use mutex locks for the manager. Causing synchronization issues.
+        Rather we would like to create separate instances per thread.
+
+        Therefore the command is part of the constructor. For every command a new instance will run.
+        Of course we need to make sure the container exists before we delete it and things like that.
+        All of that will be handled with exceptions.
+
+        Author: Namah Shrestha
+        """
         super().__init__(instance_hash)
         self.command: str = command
         self.filter_container_command: str = filter_container_command
@@ -40,7 +55,7 @@ class InstanceExec(src.Instance):
         1. Split the lines
         2. Return
 
-        We will add the steps as per requirements
+        We will add the steps as per requirements. For now only split and return
 
         Author: Namah Shrestha
         """

@@ -1,5 +1,5 @@
 """
-Constants for the application
+Constants for the applicationsrc/instance_exec.py
 """
 
 COMMAND = "command"
@@ -14,4 +14,5 @@ DELETE = "DELETE"
 CENTOS_IMAGE_NAME = "centos-demo"
 CENTOS_IMAGE_TAG = "latest"
 CENTOS_DOCKERFILE_NAME = "Dockerfile.centos"
-CENTOS_FILTER_CONTAINER = "docker container ls --aq --filter 'name=centos_demo_{}'"
+CENTOS_CONTAINER_NAME = "centos_demo_{}"
+CENTOS_FILTER_CONTAINER = "docker container ls --aq --filter 'name={}'"

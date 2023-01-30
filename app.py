@@ -46,7 +46,9 @@ async def socket_handler(websocket) -> None:
         message: str = await websocket.recv()
         if src.InstanceMessage.is_schema_valid(message):
             json_message: dict = src.InstanceMessage.decode_message(message)
-            command: str = json_message[constants.COMMAND]
+            command: str = json_message.get(constants.COMMAND)
+            if not command:
+                raise ValueError(f"Unsupported command: {command}")
             instance_hash: str = json_message[constants.INSTANCE_HASH]
             exec_class: typing.Union[
                 im.InstanceManager, ie.InstanceExec
