@@ -118,3 +118,28 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
                 f"docker image rm -f {self.image_name}:{self.image_tag}",
             ],
         )
+
+    @mock.patch("src.instance_manager.InstanceManager.create_instance")
+    @mock.patch("src.instance_manager.InstanceManager.delete_instance")
+    def test_handle(self, mock_delete_instance, mock_create_instance) -> None:
+        """
+        When command is create, create_instance is called.
+        When command is delete, delete_instance is called.
+
+        Author: Namah Shrestha
+        """
+        self.command = "CREATE"
+        self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
+            self.command, self.instance_hash
+        )
+        super(BaseTestInstanceManager, self).__init__()
+        self.instance_mgr_obj.handle()
+        mock_create_instance.assert_called_with()
+
+        self.command = "DELETE"
+        self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
+            self.command, self.instance_hash
+        )
+        super(BaseTestInstanceManager, self).__init__()
+        self.instance_mgr_obj.handle()
+        mock_delete_instance.assert_called_with()
