@@ -13,9 +13,12 @@ class InstanceExec(src.Instance):
     Hence, this is another class. Single Responsibility.
     """
 
-    def __init__(self, command: str, instance_hash: str) -> None:
+    def __init__(
+        self, command: str, instance_hash: str, filter_container_command: str
+    ) -> None:
         super().__init__(instance_hash)
         self.command: str = command
+        self.filter_container_command: str = filter_container_command
 
     def parse_command_result(self, command_result: str) -> list:
         """
@@ -33,8 +36,24 @@ class InstanceExec(src.Instance):
         """run the docker command capture the output and return the result"""
         try:
             result: list = os.popen(
-                f"docker container exec -it {constants.CENTOS_FILTER_CONTAINER.format(self.instance_hash)} {self.command}"
+                f"docker container exec -it $({self.filter_container_command.format(self.instance_hash)}) {self.command}"
             ).read()
             return self.parse_command_result(result)
         except Exception as e:
             raise Exception(e)
+
+
+class CENTOSInstanceExec(InstanceExec):
+    """
+    CENTOS implementation of instance exec
+    """
+
+    def __init__(
+        self, command: str, instance_hash: str, filter_container_command: str
+    ) -> None:
+        self.command: str = command
+        self.instance_hash: str = instance_hash
+        self.filter_container_command: str = filter_container_command
+        super().__init__(
+            self.command, self.instance_hash, self.filter_container_command
+        )

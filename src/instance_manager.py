@@ -3,12 +3,25 @@ import os
 
 # module
 import src
+import constants
 
 
 class InstanceManager(src.Instance):
-    def __init__(self, command: str, instance_hash: str) -> None:
+    def __init__(
+        self,
+        command: str,
+        instance_hash: str,
+        image_name: str,
+        image_tag: str,
+        dockerfile_name: str,
+        filter_container_command: str,
+    ) -> None:
         super().__init__(instance_hash)
         self.command: str = command
+        self.image_name: str = image_name
+        self.image_tag: str = image_tag
+        self.dockerfile_name: str = dockerfile_name
+        self.filter_container_command: str = filter_container_command
 
     def create_instance(self) -> None:
         """
@@ -17,9 +30,11 @@ class InstanceManager(src.Instance):
         3. Run the container.
         """
         try:
-            os.system("docker image build . -t centos-demo:latest -f Dockerfile.centos")
             os.system(
-                f"docker container run --name centos_demo_{self.instance_hash} -p 0.0.0.0:7777:22 -d centos-demo:latest"
+                f"docker image build . -t {self.image_name}:{self.image_tag} -f {self.dockerfile_name}"
+            )
+            os.system(
+                f"docker container run $({self.filter_container_command.format(self.instance_hash)}) -d {self.image_name}:{self.image_tag}"
             )
         except Exception as e:
             raise Exception(e)
@@ -32,12 +47,12 @@ class InstanceManager(src.Instance):
         """
         try:
             os.system(
-                f"docker container stop $(docker container ls -aq --filter 'name=centos_demo_{self.instance_hash}')"
+                f"docker container stop $({self.filter_container_command.format(self.instance_hash)})')"
             )
             os.system(
-                f"docker container rm $(docker container ls -aq --filter 'name=centos_demo_{self.instance_hash}')"
+                f"docker container rm $({self.filter_container_command.format(self.instance_hash)})')"
             )
-            os.system("docker image rm -f centos-demo:latest")
+            os.system(f"docker image rm -f {self.image_name}:{self.image_tag}")
         except Exception as e:
             raise Exception(e)
 
@@ -48,3 +63,25 @@ class InstanceManager(src.Instance):
         elif self.command == src.constants.DELETE:
             self.delete_instance()
             return [2]
+
+
+class CentosInstanceManager(InstanceManager):
+    """
+    CENTOS implementation of instance manager strategy
+    """
+
+    def __init__(self, command: str, instance_hash: str) -> None:
+        self.command: str = command
+        self.instance_hash: str = instance_hash
+        self.image_name: str = constants.CENTOS_IMAGE_NAME
+        self.image_tag: str = constants.CENTOS_IMAGE_TAG
+        self.dockerfile_name: str = constants.CENTOS_DOCKERFILE_NAME
+        self.filter_container_command: str = constants.CENTOS_FILTER_CONTAINER
+        super().__init__(
+            self.command,
+            self.instance_hash,
+            self.image_name,
+            self.image_tag,
+            self.dockerfile_name,
+            self.filter_container_command,
+        )
