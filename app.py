@@ -1,3 +1,12 @@
+"""
+This is the main application. This creates async web sockets to pass message to and from the 
+client side of the application.
+
+This is the view of the backend application.
+
+Author: Namah Shrestha
+"""
+
 # builtins
 import asyncio
 import typing
@@ -13,6 +22,11 @@ import src.instance_exec as ie
 import src.constants as constants
 
 
+"""
+Supported commands.
+
+Author: Namah Shrestha
+"""
 command_switch: dict = {
     constants.CREATE: im.InstanceManager,
     constants.EXECUTE: ie.InstanceExec,
@@ -22,6 +36,11 @@ command_switch: dict = {
 
 async def socket_handler(websocket) -> None:
     try:
+        """
+        Handle socket connection asynchronusly and return the response.
+
+        Author: Namah Shrestha
+        """
         message: str = await websocket.recv()
         if src.InstanceMessage.is_schema_valid(message):
             json_message: dict = src.InstanceMessage.decode_message(message)
@@ -40,6 +59,11 @@ async def socket_handler(websocket) -> None:
 
 
 if __name__ == "__main__":
+    """
+    Server creation and service.
+
+    Author: Namah Shrestha
+    """
     start_server = websockets.serve(socket_handler, "0.0.0.0", 8888)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()

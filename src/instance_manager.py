@@ -1,3 +1,10 @@
+"""
+This deals with the creation and deletion of os instances.
+This is the on demand section of the application.
+
+Author: Namah Shrestha
+"""
+
 # builtins
 import os
 
@@ -28,6 +35,8 @@ class InstanceManager(src.Instance):
         1. Build the image from the dockerfile.
         2. Create a container from the image.
         3. Run the container.
+
+        Author: Namah Shrestha
         """
         try:
             os.system(
@@ -44,6 +53,8 @@ class InstanceManager(src.Instance):
         1. Stop the running container
         2. Delete the container
         3. Delete the image
+
+        Author: Namah Shrestha
         """
         try:
             os.system(
@@ -59,6 +70,8 @@ class InstanceManager(src.Instance):
     def handle(self) -> list:
         """
         Handle create and delete container commands
+
+        Author: Namah Shrestha
         """
         if self.command == src.constants.CREATE:
             self.create_instance()
@@ -71,6 +84,8 @@ class InstanceManager(src.Instance):
 class CentosInstanceManager(InstanceManager):
     """
     CENTOS implementation of instance manager strategy
+
+    Author: Namah Shrestha
     """
 
     def __init__(self, command: str, instance_hash: str) -> None:

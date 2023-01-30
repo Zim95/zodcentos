@@ -1,6 +1,15 @@
+"""
+This is the instance execution functional dependency section.
+
+Here commands are executed in the container. Everything related to commands
+like execution, parsing and returning the captured output happens here.
+
+Author: Namah Shrestha
+"""
+
+
 # modules
 import src
-import constants
 
 # builtins
 import os
@@ -11,6 +20,8 @@ class InstanceExec(src.Instance):
     A class to execute commands in the docker container
     It needs to capture the results and return it back as well.
     Hence, this is another class. Single Responsibility.
+
+    Author: Namah Shrestha
     """
 
     def __init__(
@@ -28,12 +39,18 @@ class InstanceExec(src.Instance):
         2. Return
 
         We will add the steps as per requirements
+
+        Author: Namah Shrestha
         """
         res: str = command_result.split("\n")
         return res
 
     def handle(self) -> list:
-        """run the docker command capture the output and return the result"""
+        """
+        Run the docker command capture the output and return the result
+
+        Author: Namah Shrestha
+        """
         try:
             result: list = os.popen(
                 f"docker container exec -it $({self.filter_container_command.format(self.instance_hash)}) {self.command}"
@@ -46,6 +63,8 @@ class InstanceExec(src.Instance):
 class CENTOSInstanceExec(InstanceExec):
     """
     CENTOS implementation of instance exec
+
+    Author: Namah Shrestha
     """
 
     def __init__(

@@ -1,3 +1,9 @@
+"""
+Unit tests for instance manager.
+
+Author: Namah Shrestha
+"""
+
 # built-ins
 import unittest
 import unittest.mock as mock
@@ -13,6 +19,11 @@ class TestInstance(unittest.TestCase):
 
     @mock.patch("os.system")
     def test_creation(self, mock_system) -> None:
+        """
+        Test creation of instances. Unit
+
+        Author: Namah Shrestha
+        """
         self.instance_mgr_obj.create_instance()
         result: typing.List = [str(call) for call in mock_system.mock_calls]
         self.assertEqual(
@@ -25,6 +36,11 @@ class TestInstance(unittest.TestCase):
 
     @mock.patch("os.system")
     def test_deletion(self, mock_system) -> None:
+        """
+        Test deletion of instances. Unit.
+
+        Author: Namah Shrestha
+        """
         self.instance_mgr_obj.delete_instance()
         result: typing.List = [str(call) for call in mock_system.mock_calls]
         self.assertEqual(
