@@ -14,6 +14,14 @@ import constants
 
 
 class InstanceManager(src.Instance):
+    """
+    Manages the creation and deletion of containers.
+
+    This is the controller for instance management.
+
+    Author: Namah Shrestha
+    """
+
     def __init__(
         self,
         command: str,

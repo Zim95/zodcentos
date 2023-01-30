@@ -1,3 +1,7 @@
+"""
+Constants for the application
+"""
+
 COMMAND = "command"
 INSTANCE_HASH = "instance_hash"
 

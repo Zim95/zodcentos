@@ -21,6 +21,8 @@ class InstanceExec(src.Instance):
     It needs to capture the results and return it back as well.
     Hence, this is another class. Single Responsibility.
 
+    This is the execution controller of the application.
+
     Author: Namah Shrestha
     """
 

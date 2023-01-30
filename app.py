@@ -39,6 +39,8 @@ async def socket_handler(websocket) -> None:
         """
         Handle socket connection asynchronusly and return the response.
 
+        This is the core controller of the application.
+
         Author: Namah Shrestha
         """
         message: str = await websocket.recv()
