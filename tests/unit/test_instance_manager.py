@@ -79,7 +79,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
 
     @mock.patch("os.system")
-    def test_creation(self, mock_system) -> None:
+    def test_creation(self, mock_system: mock.MagicMock) -> None:
         """
         Test creation of instances. Unit
 
@@ -102,7 +102,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
 
     @mock.patch("os.system")
-    def test_deletion(self, mock_system) -> None:
+    def test_deletion(self, mock_system: mock.MagicMock) -> None:
         """
         Test deletion of instances. Unit.
 
@@ -126,7 +126,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
 
     @mock.patch("os.popen")
-    def test_list_container(self, mock_list_container) -> None:
+    def test_list_container(self, mock_list_container: mock.MagicMock) -> None:
         """
         Test creation of container. Unit.
 
@@ -142,7 +142,9 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
 
     @mock.patch("src.instance_manager.InstanceManager.create_instance")
     @mock.patch("src.instance_manager.InstanceManager.delete_instance")
-    def test_handle(self, mock_delete_instance, mock_create_instance) -> None:
+    def test_handle(
+        self, mock_delete_instance: mock.MagicMock, mock_create_instance: mock.MagicMock
+    ) -> None:
         """
         When command is create, create_instance is called.
         When command is delete, delete_instance is called.
