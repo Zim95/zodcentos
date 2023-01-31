@@ -17,7 +17,8 @@ import src.constants as constants
 class BaseTestInstanceManager:
     """
     Base Test Instance Manager for setting instance manager object.
-    Since the method is common, a common class is used for it.
+    Since the method of initialization is common for object for each implementation of OS,
+    a common class is used for it.
 
     Author: Namah Shrestha
     """
@@ -33,6 +34,11 @@ class BaseTestInstanceManager:
         filter_container_command: str,
         instance_mgr_obj: im.InstanceManager,
     ) -> None:
+        """
+        Base instance manager constructor
+
+        Author: Namah Shrestha
+        """
         self.command: str = command
         self.instance_hash: str = instance_hash
         self.image_name: str = image_name
@@ -46,7 +52,7 @@ class BaseTestInstanceManager:
 
     def extract_cmd_from_mock_call_str(self, mock_call_str) -> str:
         """
-        Turn call(<command>) to <command>
+        Turn call("<command>") to "<command>"
         """
         mock_call_str = mock_call_str.replace("call(", "")
         mock_call_str = mock_call_str[:-1]
@@ -118,6 +124,21 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
                 f"docker image rm -f {self.image_name}:{self.image_tag}",
             ],
         )
+
+    @mock.patch("os.popen")
+    def test_list_container(self, mock_list_container) -> None:
+        """
+        Test creation of container. Unit.
+
+        Author: Namah Shrestha
+        """
+        self.command = "EXEC"
+        self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
+            self.command, self.instance_hash
+        )
+        super(BaseTestInstanceManager, self).__init__()
+        self.instance_mgr_obj.list_container()
+        mock_list_container.assert_called_with(self.filter_container_command)
 
     @mock.patch("src.instance_manager.InstanceManager.create_instance")
     @mock.patch("src.instance_manager.InstanceManager.delete_instance")

@@ -7,6 +7,7 @@ Author: Namah Shrestha
 
 # builtins
 import os
+import typing
 
 # module
 import src
@@ -92,7 +93,18 @@ class InstanceManager(src.Instance):
         except Exception as e:
             raise Exception(e)
 
-    def handle(self) -> list:
+    def list_container(self) -> list:
+        """
+        1. List the container
+
+        Author: Namah Shrestha
+        """
+        try:
+            return os.popen(f"{self.filter_container_command}").read().split("\n")
+        except Exception as e:
+            raise Exception(e)
+
+    def handle(self, exec_command: typing.Optional[str] = None) -> list:
         """
         Handle create and delete container commands
 
