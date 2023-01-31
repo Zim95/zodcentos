@@ -6,7 +6,6 @@ Author: Namah Shrestha
 # built-ins
 import unittest
 import unittest.mock as mock
-import typing
 
 # modules
 import src.instance_exec as ie
