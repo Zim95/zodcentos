@@ -58,6 +58,11 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
     """
 
     def setUp(self) -> None:
+        """
+        Setup for CentosInstanceManager integration test.
+
+        Author: Namah Shrestha
+        """
         self.instance_hash: str = "test_centos_instance_hash"
         self.image_name: str = constants.CENTOS_IMAGE_NAME
         self.image_tag: str = constants.CENTOS_IMAGE_TAG
