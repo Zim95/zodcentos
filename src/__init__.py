@@ -68,4 +68,11 @@ class InstanceMessage:
 
         Author: Namah Shrestha
         """
-        return json.loads(message)
+        try:
+            return json.loads(message)
+        except json.decoder.JSONDecodeError:
+            raise json.decoder.JSONDecodeError(
+                """
+                Please provide proper json format.
+                """
+            )
