@@ -85,7 +85,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
 
         Author: Namah Shrestha
         """
-        self.command = "CREATE"
+        self.command = constants.CREATE
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
             self.command, self.instance_hash
         )
@@ -108,7 +108,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
 
         Author: Namah Shrestha
         """
-        self.command = "DELETE"
+        self.command = constants.DELETE
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
             self.command, self.instance_hash
         )
@@ -132,7 +132,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
 
         Author: Namah Shrestha
         """
-        self.command = "EXEC"
+        self.command = constants.EXECUTE
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
             self.command, self.instance_hash
         )
@@ -151,7 +151,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
 
         Author: Namah Shrestha
         """
-        self.command = "CREATE"
+        self.command = constants.CREATE
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
             self.command, self.instance_hash
         )
@@ -160,7 +160,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         mock_create_instance.assert_called_with()
         self.assertEqual(res, [0])
 
-        self.command = "DELETE"
+        self.command = constants.DELETE
         self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
             self.command, self.instance_hash
         )

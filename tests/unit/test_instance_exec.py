@@ -70,7 +70,7 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
 
         Author: Namah Shrestha
         """
-        self.command = "EXEC"
+        self.command = constants.EXECUTE
         self.exec_command = "ls"
         self.instance_exec_obj: ie.InstanceExec = ie.CentosInstanceExec(
             self.command, self.instance_hash
@@ -86,7 +86,7 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
         Author: Namah Shrestha
         """
         mock_popen.read = mock.MagicMock()
-        self.command = "EXEC"
+        self.command = constants.EXECUTE
         self.exec_command = "ls"
         self.instance_exec_obj: ie.InstanceExec = ie.CentosInstanceExec(
             self.command, self.instance_hash
@@ -109,7 +109,7 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
 
         Author: Namah Shrestha
         """
-        self.command = "EXEC"
+        self.command = constants.EXECUTE
         self.exec_command = "ls"
         self.instance_exec_obj: ie.InstanceExec = ie.CentosInstanceExec(
             self.command, self.instance_hash
