@@ -27,10 +27,13 @@ Supported commands.
 
 Author: Namah Shrestha
 """
+
+instance_manager_switch: dict = {constants.CENTOS: im.CentosInstanceManager}
+instance_exec_switch: dict = {constants.CENTOS: ie.CentosInstanceExec}
 command_switch: dict = {
-    constants.CREATE: im.InstanceManager,
-    constants.EXECUTE: ie.InstanceExec,
-    constants.DELETE: im.InstanceManager,
+    constants.CREATE: instance_manager_switch,
+    constants.EXECUTE: instance_exec_switch,
+    constants.DELETE: instance_manager_switch,
 }
 
 
@@ -46,20 +49,43 @@ async def socket_handler(websocket) -> None:
         message: str = await websocket.recv()
         if src.InstanceMessage.is_schema_valid(message):
             json_message: dict = src.InstanceMessage.decode_message(message)
+            instance_os: str = json_message.get(constants.INSTANCE_OS)
+            if instance_os not in constants.SUPPORTED_OS:
+                raise ValueError(f"Unsupported instance os: {instance_os}")
             command: str = json_message.get(constants.COMMAND)
-            if not command:
+            if command not in constants.SUPPORTED_COMMANDS:
                 raise ValueError(f"Unsupported command: {command}")
             instance_hash: str = json_message[constants.INSTANCE_HASH]
-            exec_class: typing.Union[
+            instance_class: typing.Union[
                 im.InstanceManager, ie.InstanceExec
-            ] = command_switch.get(command)
-            exec_obj: typing.Union[im.InstanceManager, ie.InstanceExec] = exec_class(
-                command, instance_hash
+            ] = command_switch.get(command).get(instance_os)
+            instance_obj: typing.Union[
+                im.InstanceManager, ie.InstanceExec
+            ] = instance_class(command, instance_hash)
+            exec_command: typing.Optional[str] = json_message.get(
+                constants.EXEC_COMMAND
             )
-            response: list = exec_obj.handle()
+            response: list = instance_obj.handle(exec_command)
             await websocket.send(json.dumps(response))
-    except Exception as e:
-        raise Exception(e)
+        else:
+            raise ValueError(
+                """
+                Invalid message body format.
+                Message body format is:
+                {
+                    'instance_os': '<os>',
+                    'command': '<command>',
+                    'instance_hash': '<instance_hash>',
+                    'exec_command<optional>': '<exec_command>'
+                }
+                """
+            )
+    except TypeError as te:
+        raise TypeError(te)
+    except ValueError as ve:
+        raise ValueError(ve)
+    except Exception:
+        raise Exception("Something went wrong")
 
 
 if __name__ == "__main__":

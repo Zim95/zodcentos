@@ -14,6 +14,7 @@ EXEC_COMMAND: str = "exec_command"
 CREATE: str = "CREATE"
 EXECUTE: str = "EXEC"
 DELETE: str = "DELETE"
+SUPPORTED_COMMANDS: list = [CREATE, EXECUTE, DELETE]
 
 # SUPPORTED OS
 CENTOS: str = "centos"

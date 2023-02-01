@@ -10,6 +10,7 @@ Functional Dependencies:
 
 # builtins
 import json
+import typing
 
 # modules
 import src.constants as constants
@@ -26,7 +27,7 @@ class Instance:
     def __init__(self, instance_hash: str) -> None:
         self.instance_hash: str = instance_hash
 
-    def handle(self) -> list:
+    def handle(self, exec_command: typing.Optional[str] = None) -> list:
         """
         This method will be implemented by various functionalities of the instance.
         This method is the handler for each funtional dependency.
@@ -46,21 +47,24 @@ class InstanceMessage:
         """
         try:
             json_message: dict = json.loads(message)
+            instance_os: str = json_message.get(constants.INSTANCE_OS)
             command: str = json_message.get(constants.COMMAND)
             instance_hash: str = json_message.get(constants.INSTANCE_HASH)
-            if not command or not instance_hash:
+            if not any([command, instance_hash, instance_os]):
                 return False
             return True
-        except json.JSONDecodeError:
-            raise json.JSONDecodeError(
-                "Invalid message body format. Message body format is \{'command': '<command>', 'instance_hash': '<instance_hash>'\}"
+        except json.decoder.JSONDecodeError:
+            raise json.decoder.JSONDecodeError(
+                """
+                Please provide proper json format.
+                """
             )
 
     @staticmethod
     def decode_message(message: str) -> str:
         """
         Decodes the message.
-        Recommend to validate schema before decoding.
+        Recommend validating schema before decoding.
 
         Author: Namah Shrestha
         """
