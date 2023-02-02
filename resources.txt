@@ -1,0 +1,28 @@
+1. How to mock coroutines: https://stackoverflow.com/questions/29881236/how-to-mock-asyncio-coroutines
+2. Python's super method for multiple inheritance: https://stackoverflow.com/questions/3277367/how-does-pythons-super-work-with-multiple-inheritance
+3. Building async web sockets in Python: https://www.piesocket.com/blog/python-websocket
+
+Problem with testing coroutines via mock.
+-----------------------------------------
+1. Our web socket is async so it is awaited. 
+2. Normal mock functions wont work. So we used async mock.
+3. Sending mock.AsyncMock will return a class which can further be used to create mock coroutines.
+    Therefore at first we create the mock handler.
+        - self.mock_handler: mock.AsyncMock = mock.AsyncMock
+    This serves as the websocket socket handler method.
+    Since it is not a coroutine yet, we can add a dummy coroutine method.
+        - self.mock_handler.recv: mock.AsyncMock = mock.AsyncMock()
+    So now we have succesfully mocked the websocket handler with a mock handler, with a recv coroutine.
+    Now we need to set the return_value for the recv coroutine.
+        - self.mock_handler.recv.return_value = "test_message"
+    We can change this return value and test the results accordingly.
+4. Now when we run our application method with asyncio.run, we will get an exception.
+    This is because of course we have mocked the websocket and no actual messages are received.
+    So instead, we handle the exception and test if expected calls where made within the exception handling.
+    this is done in unit test.
+
+Problem with testing coroutines without mock, in integration tests.
+-------------------------------------------------------------------
+1. We need to test response from web servers.
+2. This means the web server needs to run, while the client makes requests to it.
+3. Both web server and the client needs to run.
