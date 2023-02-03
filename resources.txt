@@ -12,8 +12,8 @@ Problem with testing coroutines via mock.
     This serves as the websocket socket handler method.
     Since it is not a coroutine yet, we can add a dummy coroutine method.
         - self.mock_handler.recv: mock.AsyncMock = mock.AsyncMock()
-    So now we have succesfully mocked the websocket handler with a mock handler, with a recv coroutine.
-    Now we need to set the return_value for the recv coroutine.
+    So now we have succesfully mocked the websocket recv coroutine a mock coroutine handler.
+    Now we need to set the return_value for the mock coroutine.
         - self.mock_handler.recv.return_value = "test_message"
     We can change this return value and test the results accordingly.
 4. Now when we run our application method with asyncio.run, we will get an exception.
@@ -54,4 +54,13 @@ Problem with testing coroutines without mock, in integration tests.
         - We came accross this: https://stackoverflow.com/questions/52691931/simple-way-to-test-websocket-availability-in-python
         - Here we found a method called `async_to_sync`. However, this post assumes that the web server is already running.
         - We still have to run the web server in case of our code. Then we need to run the client in the unittest methods.
-    - This is where we are stuck at the moment.
+    - We tried an intermediate thing:
+        - In the test case, instead of asyncio.run, we used asyncio.get_event_loop().run_until_complete(test_everything()).
+        - Here we got the exception, asyncio.exceptions.InvalidStateError: Result is not set.
+        - Atleast we got rid of the task was destroyed but it was pending error.
+    - To solve this issue as well, we followed this tutorial to learn how to use asyncio.gather: https://superfastpython.com/asyncio-gather/
+        - Here we saw that we await asyncio.gather(*tasks) rather than just run this assign it to a variable and await later, that doesnt work.
+        - However we got, This event loop is already running error. Now we should fix this and things should work.
+    - We found this post: https://stackoverflow.com/questions/46827007/runtimeerror-this-event-loop-is-already-running-in-python
+        - This post also uses asyncio.get_event_loop().run_until_complete(foo()) multiple times and asks the same question we did.
+        - Why is this a problem.
