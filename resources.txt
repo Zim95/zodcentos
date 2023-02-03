@@ -42,6 +42,15 @@ Problem with testing coroutines without mock, in integration tests.
     - Once the client tasks are done, we close the web server.
 6. Problem:
     - The test case does not run because it says no running event loop. For this, we looked up online:
+        - We came accross this: https://stackoverflow.com/questions/58774718/asyncio-in-corroutine-runtimeerror-no-running-event-loop
+        - This suggested us to create tasks with the async event loop like: asyncio.get_event_loop().create_task(coroutine_function(arg1, ...)),
+            instead of plain old asyncio.create_task(coroutine_function(arg1, ...)).
+        - This resolved the no running event loop issue, we created tasks with event loop and appended them in a list. Then we used,
+            asyncio.gather to run them. But then we came accross another issue, the code runs but we get, task was destroyed but it was pending.
+        - Even when we get the res and call res.result(), we dont get anything, it just says error state, result is pending for the futures.
+        - Since asyncio.gather returns future objects, we get futures whose results are pending.
+        - Even when we await their results, were not getting anything.
+    - To solve this issue we tried.
         - We came accross this: https://stackoverflow.com/questions/52691931/simple-way-to-test-websocket-availability-in-python
         - Here we found a method called `async_to_sync`. However, this post assumes that the web server is already running.
         - We still have to run the web server in case of our code. Then we need to run the client in the unittest methods.
