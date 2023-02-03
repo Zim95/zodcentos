@@ -26,3 +26,23 @@ Problem with testing coroutines without mock, in integration tests.
 1. We need to test response from web servers.
 2. This means the web server needs to run, while the client makes requests to it.
 3. Both web server and the client needs to run.
+4. We tried the following option at first:
+    - So first we have the web socket server.
+    - We create a client coroutine which sends messages to the web socket server.
+    - The nature of coroutines is that only one of them can run in non blocking fashion,
+        the other one will run only after the previous one is over.
+    - So if we start the web server, there is no way that we can run the client coroutine.
+5. Created non blocking tasks.
+    - Tasks however run concurrently.
+    - So we create a web server task and client tasks.
+        - Client tasks are basically, the client coroutine run with different messages.
+        - To be exact, we have 5 client tasks, i.e. 5 different messages sent with the  same coroutine.
+    - The idea is to run the web server task which will keep running.
+    - Then run the client tasks until they are complete, since tasks can run concurrently without the previous one having to end.
+    - Once the client tasks are done, we close the web server.
+6. Problem:
+    - The test case does not run because it says no running event loop. For this, we looked up online:
+        - We came accross this: https://stackoverflow.com/questions/52691931/simple-way-to-test-websocket-availability-in-python
+        - Here we found a method called `async_to_sync`. However, this post assumes that the web server is already running.
+        - We still have to run the web server in case of our code. Then we need to run the client in the unittest methods.
+    - This is where we are stuck at the moment.

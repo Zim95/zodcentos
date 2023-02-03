@@ -68,8 +68,7 @@ async def socket_handler(websocket) -> None:
             response: list = instance_obj.handle(exec_command)
             await websocket.send(json.dumps(response))
         else:
-            raise ValueError(
-                """
+            error_message: str = """
                 Invalid message body format.
                 Message body format is:
                 {
@@ -79,13 +78,20 @@ async def socket_handler(websocket) -> None:
                     'exec_command<optional>': '<exec_command>'
                 }
                 """
-            )
+            await websocket.send(error_message)
+            raise ValueError(error_message)
     except TypeError as te:
+        type_error_message: str = str(te)
+        await websocket.send(type_error_message)
         raise TypeError(te)
     except ValueError as ve:
+        value_error_message: str = str(ve)
+        await websocket.send(value_error_message)
         raise ValueError(ve)
     except Exception:
-        raise Exception("Something went wrong")
+        exception_message: str = "Something went wrong"
+        await websocket.send(exception_message)
+        raise Exception(exception_message)
 
 
 if __name__ == "__main__":
@@ -94,6 +100,8 @@ if __name__ == "__main__":
 
     Author: Namah Shrestha
     """
-    start_server = websockets.serve(socket_handler, "0.0.0.0", 8888)
+    start_server: websockets.legacy.server.Serve = websockets.serve(
+        socket_handler, "0.0.0.0", 8888
+    )
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
