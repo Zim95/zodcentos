@@ -1,12 +1,11 @@
 """
-Unit tests for instance manager.
+Integration tests for instance manager.
 
 Author: Namah Shrestha
 """
 
 # built-ins
 import unittest
-import unittest.mock as mock
 import typing
 
 # modules
@@ -50,14 +49,6 @@ class BaseTestInstanceManager:
         )
         self.instance_mgr_obj: im.InstanceManager = instance_mgr_obj
 
-    def extract_cmd_from_mock_call_str(self, mock_call_str) -> str:
-        """
-        Turn call("<command>") to "<command>"
-        """
-        mock_call_str = mock_call_str.replace("call(", "")
-        mock_call_str = mock_call_str[:-1]
-        return eval(mock_call_str)
-
 
 class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
     """
@@ -67,6 +58,11 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
     """
 
     def setUp(self) -> None:
+        """
+        Setup for CentosInstanceManager integration test.
+
+        Author: Namah Shrestha
+        """
         self.instance_hash: str = "test_centos_instance_hash"
         self.image_name: str = constants.CENTOS_IMAGE_NAME
         self.image_tag: str = constants.CENTOS_IMAGE_TAG
@@ -78,10 +74,9 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
             self.container_name
         )
 
-    @mock.patch("os.system")
-    def test_creation(self, mock_system: mock.MagicMock) -> None:
+    def test_creation(self) -> None:
         """
-        Test creation of instances. Unit
+        Test creation of instances. Integration
 
         Author: Namah Shrestha
         """
@@ -91,20 +86,12 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
         super(BaseTestInstanceManager, self).__init__()
         self.instance_mgr_obj.create_instance()
-        result: typing.List = [str(call) for call in mock_system.mock_calls]
-        result = list(map(lambda x: self.extract_cmd_from_mock_call_str(x), result))
-        self.assertEqual(
-            result,
-            [
-                f"docker image build . -t {self.image_name}:{self.image_tag} -f {self.dockerfile_name}",
-                f"docker container run --name {self.container_name} -d {self.image_name}:{self.image_tag}",
-            ],
-        )
+        container_list_res: list = self.instance_mgr_obj.list_container()
+        self.assertEqual(len(container_list_res[:-1]), 1)
 
-    @mock.patch("os.system")
-    def test_deletion(self, mock_system: mock.MagicMock) -> None:
+    def test_deletion(self) -> None:
         """
-        Test deletion of instances. Unit.
+        Test deletion of instances. Integration.
 
         Author: Namah Shrestha
         """
@@ -114,37 +101,10 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
         super(BaseTestInstanceManager, self).__init__()
         self.instance_mgr_obj.delete_instance()
-        result: typing.List = [str(call) for call in mock_system.mock_calls]
-        result = list(map(lambda x: self.extract_cmd_from_mock_call_str(x), result))
-        self.assertEqual(
-            result,
-            [
-                f"docker container stop $({self.filter_container_command})",
-                f"docker container rm $({self.filter_container_command})",
-                f"docker image rm -f {self.image_name}:{self.image_tag}",
-            ],
-        )
+        container_list_res: list = self.instance_mgr_obj.list_container()
+        self.assertEqual(len(container_list_res[:-1]), 0)
 
-    @mock.patch("os.popen")
-    def test_list_container(self, mock_list_container: mock.MagicMock) -> None:
-        """
-        Test creation of container. Unit.
-
-        Author: Namah Shrestha
-        """
-        self.command = constants.EXECUTE
-        self.instance_mgr_obj: im.InstanceManager = im.CentosInstanceManager(
-            self.command, self.instance_hash
-        )
-        super(BaseTestInstanceManager, self).__init__()
-        self.instance_mgr_obj.list_container()
-        mock_list_container.assert_called_with(self.filter_container_command)
-
-    @mock.patch("src.instance_manager.InstanceManager.create_instance")
-    @mock.patch("src.instance_manager.InstanceManager.delete_instance")
-    def test_handle(
-        self, mock_delete_instance: mock.MagicMock, mock_create_instance: mock.MagicMock
-    ) -> None:
+    def test_handle(self) -> None:
         """
         When command is create, create_instance is called.
         When command is delete, delete_instance is called.
@@ -157,7 +117,8 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         )
         super(BaseTestInstanceManager, self).__init__()
         res: list = self.instance_mgr_obj.handle()
-        mock_create_instance.assert_called_with()
+        container_list_res: list = self.instance_mgr_obj.list_container()
+        self.assertEqual(len(container_list_res[:-1]), 1)
         self.assertEqual(res, [0])
 
         self.command = constants.DELETE
@@ -167,5 +128,6 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         super(BaseTestInstanceManager, self).__init__()
         self.instance_mgr_obj.handle()
         res: list = self.instance_mgr_obj.handle()
-        mock_delete_instance.assert_called_with()
+        container_list_res: list = self.instance_mgr_obj.list_container()
+        self.assertEqual(len(container_list_res[:-1]), 0)
         self.assertEqual(res, [2])
