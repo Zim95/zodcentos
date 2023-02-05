@@ -90,9 +90,8 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
         self.assertEqual(
             res,
             (
-                "bin  etc   lib\t  lost+found  mnt  "
-                "proc  run   srv  tmp  var\ndev  home  lib64  media       "
-                "opt  root  sbin  sys  usr\n"
+                "bin\ndev\netc\nhome\nlib\nlib64\nlost+found\nmedia\nmnt\nopt\nproc\n"
+                "root\nrun\nsbin\nsrv\nsys\ntmp\nusr\nvar\n"
             ),
         )
 
@@ -112,8 +111,25 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
         self.assertEqual(
             res,
             [
-                "bin  etc   lib\t  lost+found  mnt  proc  run   srv  tmp  var",
-                "dev  home  lib64  media       opt  root  sbin  sys  usr",
+                "bin",
+                "dev",
+                "etc",
+                "home",
+                "lib",
+                "lib64",
+                "lost+found",
+                "media",
+                "mnt",
+                "opt",
+                "proc",
+                "root",
+                "run",
+                "sbin",
+                "srv",
+                "sys",
+                "tmp",
+                "usr",
+                "var",
                 "",
             ],
         )

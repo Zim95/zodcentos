@@ -94,7 +94,7 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
         super(BaseTestInstanceExec, self).__init__()
         self.instance_exec_obj.exec_instance(self.exec_command)
         mock_popen.assert_called_with(
-            f"docker container exec -it $({self.filter_container_command}) {self.exec_command}"
+            f"docker container exec $({self.filter_container_command}) {self.exec_command}"
         )
 
     @mock.patch("src.instance_exec.InstanceExec.parse_command_result")

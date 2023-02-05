@@ -119,8 +119,7 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         self.assertEqual(
             result,
             [
-                f"docker container stop $({self.filter_container_command})",
-                f"docker container rm $({self.filter_container_command})",
+                f"docker container rm -f $({self.filter_container_command})",
                 f"docker image rm -f {self.image_name}:{self.image_tag}",
             ],
         )
