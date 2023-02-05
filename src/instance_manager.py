@@ -84,10 +84,7 @@ class InstanceManager(src.Instance):
         """
         try:
             os.system(
-                f"docker container stop $({self.filter_container_command.format(self.instance_hash)})"
-            )
-            os.system(
-                f"docker container rm $({self.filter_container_command.format(self.instance_hash)})"
+                f"docker container rm -f $({self.filter_container_command.format(self.instance_hash)})"
             )
             os.system(f"docker image rm -f {self.image_name}:{self.image_tag}")
         except Exception as e:

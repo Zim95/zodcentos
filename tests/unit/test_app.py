@@ -30,6 +30,8 @@ class TestApp(unittest.TestCase):
         """
         self.mock_handler: mock.AsyncMock = mock.AsyncMock
         self.mock_handler.recv: mock.AsyncMock = mock.AsyncMock()
+        self.mock_handler.send: mock.AsyncMock = mock.AsyncMock()
+        self.mock_handler.send.return_value = "test_send"
         self.dummy_return_value: dict = {
             constants.INSTANCE_OS: constants.CENTOS,
             constants.COMMAND: constants.CREATE,
@@ -172,5 +174,5 @@ class TestAppCentos(TestApp):
             Author: Namah Shrestha
             """
             mock_popen.assert_called_with(
-                f"docker container exec -it $({self.filter_container_command}) {self.dummy_return_value[constants.EXEC_COMMAND]}"
+                f"docker container exec $({self.filter_container_command}) {self.dummy_return_value[constants.EXEC_COMMAND]}"
             )
