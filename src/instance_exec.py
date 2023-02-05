@@ -75,7 +75,7 @@ class InstanceExec(src.Instance):
         """
         try:
             result: str = os.popen(
-                f"docker container exec -it $({self.filter_container_command}) {exec_command}"
+                f"docker container exec $({self.filter_container_command}) {exec_command}"
             ).read()
             return result
         except Exception as e:

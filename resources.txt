@@ -87,4 +87,15 @@ Problem with running the commands from the container:
     which is also located at /var/run/docker.sock.
     So we need to map a volume like -v /var/run/docker.sock:/var/run/docker.sock
 7. Since we are using the host daemon, all docker commands within the container will be executed by the host daemon and things should work.
- 
+
+Problem with exec not running:
+------------------------------
+1. When we were running docker exec -it instead of getting the results we were getting an empty list and
+    an error on docker saying that input device is not a tty.
+2. We looked online and found this: https://stackoverflow.com/questions/43099116/error-the-input-device-is-not-a-tty
+3. This says that we remove -it option and run the command and we should get the result.
+4. After removing the command, we had to refactor the test cases for both unit and integration test.
+5. Also, when running the tests we found that using docker stop and then using rm would not delete the container, it would only stop it.
+6. Because of this recreating the contiainer in integration tests was causing errors and the tests were failing.
+7. Therefore we removed the docker stop command and directly added rm -f, which solved the problem and our tests passed.
+
