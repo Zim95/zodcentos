@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.9"
+install:
+  - pip install -r requirements.txt
+script:
+  - flake8
+  - python -m unittest discover -s "./tests/unit/" -p "test_*.py"
+  - python -m unittest discover -s "./tests/integration/" -p "test_*.py"
