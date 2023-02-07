@@ -39,11 +39,14 @@ class InstanceManager(src.Instance):
         every command can be executed in a different thread seperately.
         Thread safety considerations.
         If we use a single manager then there might be a time where
-        we might need to use mutex locks for the manager. Causing synchronization issues.
+        we might need to use mutex locks for the manager.
+        Causing synchronization issues.
         Rather we would like to create separate instances per thread.
 
-        Therefore the command is part of the constructor. For every command a new instance will run.
-        Of course we need to make sure the container exists before we delete it and things like that.
+        Therefore the command is part of the constructor.
+        For every command a new instance will run.
+        Of course we need to make sure the container exists
+        before we delete it and things like that.
         All of that will be handled with exceptions.
 
         Author: Namah Shrestha
@@ -66,10 +69,13 @@ class InstanceManager(src.Instance):
         """
         try:
             os.system(
-                f"docker image build . -t {self.image_name}:{self.image_tag} -f {self.dockerfile_name}"
+                f"docker image build . -t "
+                f"{self.image_name}:{self.image_tag} -f "
+                f"{self.dockerfile_name}"
             )
             os.system(
-                f"docker container run --name {self.container_name} -d {self.image_name}:{self.image_tag}"
+                f"docker container run --name {self.container_name} -d "
+                f"{self.image_name}:{self.image_tag}"
             )
         except Exception as e:
             raise Exception(e)
@@ -84,7 +90,8 @@ class InstanceManager(src.Instance):
         """
         try:
             os.system(
-                f"docker container rm -f $({self.filter_container_command.format(self.instance_hash)})"
+                f"docker container rm -f "
+                f"$({self.filter_container_command.format(self.instance_hash)})"
             )
             os.system(f"docker image rm -f {self.image_name}:{self.image_tag}")
         except Exception as e:

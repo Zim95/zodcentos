@@ -15,7 +15,8 @@ import src.constants as constants
 class BaseTestInstanceExec:
     """
     Base Test Instance Exec for executing commands for the container.
-    Since the method of initialization is common for object for each implementation of OS,
+    Since the method of initialization is common for object for each
+    implementation of OS,
     a common class is used for it.
 
     Author: Namah Shrestha
@@ -53,8 +54,10 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
     def setUp(self) -> None:
         """
         Setup for CentosInstanceExec.
-        Here we need to make sure the container exists before actually executing the commands.
-        Therefore, we need to use the instance manager to create the container.
+        Here we need to make sure the container exists before
+        actually executing the commands.
+        Therefore, we need to use the instance manager to
+        create the container.
 
         Author: Namah Shrestha
         """

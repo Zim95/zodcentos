@@ -3,7 +3,8 @@ Here we have instance related code.
 
 Functional Dependencies:
 ------------------------
-1. Should create a container for the mentioned operating system. Currently only Centos is supported.
+1. Should create a container for the mentioned operating system.
+    Currently only Centos is supported.
 2. Should delete the container.
 3. Should execute commands on the container.
 """
@@ -18,7 +19,8 @@ import src.constants as constants
 
 class Instance:
     """
-    This is the instance class. It has a instance hash that is used to uniquely identify it.
+    This is the instance class.
+    It has a instance hash that is used to uniquely identify it.
     Every new session has an instance created.
 
     Author: Namah Shrestha
@@ -29,7 +31,8 @@ class Instance:
 
     def handle(self, exec_command: typing.Optional[str] = None) -> list:
         """
-        This method will be implemented by various functionalities of the instance.
+        This method will be implemented by various functionalities of
+        the instance.
         This method is the handler for each funtional dependency.
 
         Author: Namah Shrestha
@@ -41,7 +44,8 @@ class InstanceMessage:
     @staticmethod
     def is_schema_valid(message: str) -> bool:
         """
-        Checks the shchema of the message and raises error if schema mismatch happens.
+        Checks the shchema of the message and raises error if
+        schema mismatch happens.
 
         Author: Namah Shrestha
         """

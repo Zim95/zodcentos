@@ -95,7 +95,12 @@ class TestApp(unittest.TestCase):
         )
         self.assertEqual(
             res,
-            "Invalid message body format. Message should have 'instance_os', 'command', 'instance_hash', 'exec_command<optional>'",
+            (
+                "Invalid message body format."
+                " Message should have 'instance_os', 'command', "
+                "'instance_hash',"
+                " 'exec_command<optional>'"
+            ),
         )
 
 
@@ -179,7 +184,12 @@ class TestCentosApp(TestApp):
         )
         self.assertEqual(
             res_exec,
-            '["bin", "dev", "etc", "home", "lib", "lib64", "lost+found", "media", "mnt", "opt", "proc", "root", "run", "sbin", "srv", "sys", "tmp", "usr", "var", ""]',
+            (
+                '["bin", "dev", "etc", "home", "lib", "lib64", '
+                '"lost+found", "media", "mnt", "opt", "proc", '
+                '"root", "run", "sbin", "srv", "sys", "tmp", "usr", '
+                '"var", ""]'
+            ),
         )
         test_send_delete_container_task: asyncio.Task = (
             asyncio.get_event_loop().create_task(
