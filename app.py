@@ -1,5 +1,6 @@
 """
-This is the main application. This creates async web sockets to pass message to and from the 
+This is the main application.
+This creates async web sockets to pass message to and from the
 client side of the application.
 
 This is the view of the backend application.
@@ -68,7 +69,11 @@ async def socket_handler(websocket) -> None:
             response: list = instance_obj.handle(exec_command)
             await websocket.send(json.dumps(response))
         else:
-            error_message: str = "Invalid message body format. Message should have 'instance_os', 'command', 'instance_hash', 'exec_command<optional>'"
+            error_message: str = (
+                "Invalid message body format."
+                "Message should have 'instance_os',"
+                " 'command', 'instance_hash', 'exec_command<optional>'"
+            )
             await websocket.send(error_message)
             raise ValueError(error_message)
     except TypeError as te:

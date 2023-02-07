@@ -15,7 +15,8 @@ import src.constants as constants
 class BaseTestInstanceExec:
     """
     Base Test Instance Exec for executing commands for the container.
-    Since the method of initialization is common for object for each implementation of OS,
+    Since the method of initialization is common for object for
+    each implementation of OS,
     a common class is used for it.
 
     Author: Namah Shrestha
@@ -94,7 +95,8 @@ class TestCentosInstanceExec(unittest.TestCase, BaseTestInstanceExec):
         super(BaseTestInstanceExec, self).__init__()
         self.instance_exec_obj.exec_instance(self.exec_command)
         mock_popen.assert_called_with(
-            f"docker container exec $({self.filter_container_command}) {self.exec_command}"
+            f"docker container exec "
+            f"$({self.filter_container_command}) {self.exec_command}"
         )
 
     @mock.patch("src.instance_exec.InstanceExec.parse_command_result")

@@ -17,7 +17,8 @@ import src.constants as constants
 class BaseTestInstanceManager:
     """
     Base Test Instance Manager for setting instance manager object.
-    Since the method of initialization is common for object for each implementation of OS,
+    Since the method of initialization is common for object
+    for each implementation of OS,
     a common class is used for it.
 
     Author: Namah Shrestha
@@ -96,8 +97,11 @@ class TestCentosInstanceManager(unittest.TestCase, BaseTestInstanceManager):
         self.assertEqual(
             result,
             [
-                f"docker image build . -t {self.image_name}:{self.image_tag} -f {self.dockerfile_name}",
-                f"docker container run --name {self.container_name} -d {self.image_name}:{self.image_tag}",
+                f"docker image build . -t "
+                f"{self.image_name}:{self.image_tag} -f "
+                f"{self.dockerfile_name}",
+                f"docker container run --name "
+                f"{self.container_name} -d {self.image_name}:{self.image_tag}",
             ],
         )
 

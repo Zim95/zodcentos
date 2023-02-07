@@ -40,11 +40,14 @@ class InstanceExec(src.Instance):
         every command can be executed in a different thread seperately.
         Thread safety considerations.
         If we use a single manager then there might be a time where
-        we might need to use mutex locks for the manager. Causing synchronization issues.
+        we might need to use mutex locks for the manager.
+        Causing synchronization issues.
         Rather we would like to create separate instances per thread.
 
-        Therefore the command is part of the constructor. For every command a new instance will run.
-        Of course we need to make sure the container exists before we delete it and things like that.
+        Therefore the command is part of the constructor.
+        For every command a new instance will run.
+        Of course we need to make sure the container exists
+        before we delete it and things like that.
         All of that will be handled with exceptions.
 
         Author: Namah Shrestha
@@ -60,7 +63,8 @@ class InstanceExec(src.Instance):
         1. Split the lines
         2. Return
 
-        We will add the steps as per requirements. For now only split and return
+        We will add the steps as per requirements.
+        For now only split and return
 
         Author: Namah Shrestha
         """
@@ -75,7 +79,8 @@ class InstanceExec(src.Instance):
         """
         try:
             result: str = os.popen(
-                f"docker container exec $({self.filter_container_command}) {exec_command}"
+                f"docker container exec $({self.filter_container_command})"
+                f" {exec_command}"
             ).read()
             return result
         except Exception as e:
@@ -109,7 +114,7 @@ class CentosInstanceExec(InstanceExec):
         )
         self.filter_container_command: str = constants.CENTOS_FILTER_CONTAINER.format(
             self.container_name
-        )
+        )  # noop
         super().__init__(
             self.command,
             self.instance_hash,

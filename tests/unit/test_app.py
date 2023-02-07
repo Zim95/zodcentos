@@ -31,7 +31,7 @@ class TestApp(unittest.TestCase):
         self.mock_handler: mock.AsyncMock = mock.AsyncMock
         self.mock_handler.recv: mock.AsyncMock = mock.AsyncMock()
         self.mock_handler.send: mock.AsyncMock = mock.AsyncMock()
-        self.mock_handler.send.return_value = "test_send"
+        self.mock_handler.send.return_value = "test_send    "
         self.dummy_return_value: dict = {
             constants.INSTANCE_OS: constants.CENTOS,
             constants.COMMAND: constants.CREATE,
@@ -134,7 +134,9 @@ class TestAppCentos(TestApp):
             Author: Namah Shrestha
             """
             mock_system.assert_called_with(
-                f"docker container run --name {self.container_name} -d {self.image_name}:{self.image_tag}"
+                f"docker container run --name "
+                f"{self.container_name} -d "
+                f"{self.image_name}:{self.image_tag}"
             )
 
         self.dummy_return_value[constants.COMMAND] = constants.DELETE
@@ -174,5 +176,7 @@ class TestAppCentos(TestApp):
             Author: Namah Shrestha
             """
             mock_popen.assert_called_with(
-                f"docker container exec $({self.filter_container_command}) {self.dummy_return_value[constants.EXEC_COMMAND]}"
+                f"docker container exec "
+                f"$({self.filter_container_command}) "
+                f"{self.dummy_return_value[constants.EXEC_COMMAND]}"
             )

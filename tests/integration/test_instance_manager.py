@@ -6,7 +6,6 @@ Author: Namah Shrestha
 
 # built-ins
 import unittest
-import typing
 
 # modules
 import src.instance_manager as im
@@ -16,7 +15,8 @@ import src.constants as constants
 class BaseTestInstanceManager:
     """
     Base Test Instance Manager for setting instance manager object.
-    Since the method of initialization is common for object for each implementation of OS,
+    Since the method of initialization is common for object for
+    each implementation of OS,
     a common class is used for it.
 
     Author: Namah Shrestha
