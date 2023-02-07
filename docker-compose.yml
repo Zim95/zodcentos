@@ -1,0 +1,13 @@
+version: "3.3"
+services:
+  zodcentos_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zodcentos_backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8888:8888
+    stdin_open: true
+    tty: true

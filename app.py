@@ -68,16 +68,7 @@ async def socket_handler(websocket) -> None:
             response: list = instance_obj.handle(exec_command)
             await websocket.send(json.dumps(response))
         else:
-            error_message: str = """
-                Invalid message body format.
-                Message body format is:
-                {
-                    'instance_os': '<os>',
-                    'command': '<command>',
-                    'instance_hash': '<instance_hash>',
-                    'exec_command<optional>': '<exec_command>'
-                }
-                """
+            error_message: str = "Invalid message body format. Message should have 'instance_os', 'command', 'instance_hash', 'exec_command<optional>'"
             await websocket.send(error_message)
             raise ValueError(error_message)
     except TypeError as te:
