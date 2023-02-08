@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Unit Test Zodcentos
+        run: python -m unittest discover -s ./tests/unit/ -p "test_*.py"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build zodcentos
+        run: docker build . --file Dockerfile --tag zodcentos:latest
