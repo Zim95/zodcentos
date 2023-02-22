@@ -99,3 +99,42 @@ Problem with exec not running:
 6. Because of this recreating the contiainer in integration tests was causing errors and the tests were failing.
 7. Therefore we removed the docker stop command and directly added rm -f, which solved the problem and our tests passed.
 
+
+Enabling SSH:
+-------------
+1. SSH has to be enabled inside the docker container. Once that is done,
+    we need to be able to ssh into the container using python.
+    Then all responses shall be tested.
+
+    Dockerfile for centos enabled with ssh: https://gist.github.com/lenchevsky/7eba11bd491e70105de3600ec9ec1292
+
+    Check: How to test if ssh is running in the container: 
+    https://cplusprogrammer.wordpress.com/2016/10/17/how-to-check-if-ssh-is-running-on-linux/
+
+    Here is an ubuntu container that acts as a ssh server: https://dev.to/s1ntaxe770r/how-to-setup-ssh-within-a-docker-container-i5i
+    The user is test and the password is test.
+    We ssh using: ssh test@0.0.0.0 -p 22 and the password is test as well.
+
+2. Now we need to create a Python session and check the responses. We will
+    check for the following commands:
+    - top: should give us the top ui.
+    - mkdir, cd and ls: should create, enter and list directories.
+
+3. So we are able to create SSH connections with Python, but the same thing happens
+    we are still unable to get a proper session running.
+    So we need to build the session ourselves.
+
+
+Building terminal session:
+---------------------------
+1. The terminal keeps track of the current working directory and executes commands accordingly
+2. We need to detect directories in the command.
+    A regular expression will be used for this.
+3. Once that is done we need to to construct the absolute path with the root.
+
+Do we really need SSH?
+-----------------------
+1. Consider top command. If we use docker exec we cant get the output of top.
+2. But we can however get top using -b. 
+3. So is every command unique? No. it shouldnt be.
+4. Lets just try figuring out cd first and then everything else.
