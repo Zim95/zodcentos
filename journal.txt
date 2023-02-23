@@ -138,3 +138,10 @@ Do we really need SSH?
 2. But we can however get top using -b. 
 3. So is every command unique? No. it shouldnt be.
 4. Lets just try figuring out cd first and then everything else.
+
+
+FINALLY THE SOLUTION:
+---------------------
+1. Before every command, we will do a cd to current working directory.
+2. The current working directory needs to be updated via every cd command.
+3. Thats it.
