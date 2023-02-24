@@ -138,7 +138,6 @@ Do we really need SSH?
 2. But we can however get top using -b. 
 3. So is every command unique? No. it shouldnt be.
 4. Lets just try figuring out cd first and then everything else.
-<<<<<<< HEAD
 
 
 FINALLY THE SOLUTION:
