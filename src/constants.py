@@ -18,7 +18,8 @@ SUPPORTED_COMMANDS: list = [CREATE, EXECUTE, DELETE]
 
 # SUPPORTED OS
 CENTOS: str = "centos"
-SUPPORTED_OS: list = [CENTOS]
+UBUNTU: str = "ubuntu"
+SUPPORTED_OS: list = [CENTOS, UBUNTU]
 
 # CENTOS IMAGE DEVELOPMENT
 CENTOS_IMAGE_NAME: str = "centos-demo"
@@ -26,3 +27,10 @@ CENTOS_IMAGE_TAG: str = "latest"
 CENTOS_DOCKERFILE_NAME: str = "Dockerfile.centos"
 CENTOS_CONTAINER_NAME: str = "centos_demo_{}"
 CENTOS_FILTER_CONTAINER: str = "docker container ls -q --filter 'name={}'"
+
+# UBUNTU IMAGE DEVELOPMENT
+UBUNTU_IMAGE_NAME: str = "ubuntu-demo"
+UBUNTU_IMAGE_TAG: str = "latest"
+UBUNTU_DOCKERFILE_NAME: str = "Dockerfile.ubuntu"
+UBUNTU_CONTAINER_NAME: str = "ubuntu_demo_{}"
+UBUNTU_FILTER_CONTAINER: str = "docker container ls -q --filter 'name={}'"
