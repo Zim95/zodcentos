@@ -78,6 +78,8 @@ class ChangeDirectoryHandler:
 
         Author: Namah Shrestha
         """
+        if not self.is_cd_command(cmd):
+            return ""
         dirc = cmd.split(
             " ",
         )[-1]
@@ -92,13 +94,21 @@ class ChangeDirectoryHandler:
 
         Author: Namah Shrestha
         """
+        if not self.is_cd_command(cmd):
+            return ""
         dirc: str = self.parse_cd_command(cmd)
-        """ Now use os.chdir without actually changing the directory """
+        if not dirc:
+            return ""
+        """
+        Now use os.chdir without actually changing the directory
+        We do this by reseting the actual workdir to abspath.
+        We only change the curr_dir to the desired path.
+        """
         # get the current working directory
         current_dir: str = self.get_cwd()
         os.chdir(current_dir)  # change to current_dir_value
         try:
-            os.chdir(dirc)  # change directory
+            os.chdir(dirc)  # change directory relatively
             self.dir_state_manager.curr_dir = (
                 os.getcwd()
             )  # change the current directory to the change directory
