@@ -3,6 +3,7 @@ Constants for the applicationsrc/instance_exec.py
 
 Author: Namah Shrestha
 """
+import os
 
 # Keys
 INSTANCE_OS: str = "instance_os"
@@ -20,6 +21,10 @@ SUPPORTED_COMMANDS: list = [CREATE, EXECUTE, DELETE]
 CENTOS: str = "centos"
 UBUNTU: str = "ubuntu"
 SUPPORTED_OS: list = [CENTOS, UBUNTU]
+
+# Directory constants
+CHANGE_DIRECTORY_CMD_PATTERN: str = "^cd [/a-zA-Z0-9.+~]+$"
+MAIN_WORKING_DIRECTORY: str = os.path.abspath("")
 
 # CENTOS IMAGE DEVELOPMENT
 CENTOS_IMAGE_NAME: str = "centos-demo"
