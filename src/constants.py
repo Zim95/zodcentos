@@ -26,6 +26,9 @@ SUPPORTED_OS: list = [CENTOS, UBUNTU]
 CHANGE_DIRECTORY_CMD_PATTERN: str = "^cd [/a-zA-Z0-9.+~]+$"
 MAIN_WORKING_DIRECTORY: str = os.path.abspath("")
 
+# GENERAL IMAGE DEVELOPMENT
+FILTER_CONTAINER_COMMAND: str = "docker container ls -q --filter 'name={}'"
+
 # CENTOS IMAGE DEVELOPMENT
 CENTOS_IMAGE_NAME: str = "centos-demo"
 CENTOS_IMAGE_TAG: str = "latest"
