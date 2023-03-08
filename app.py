@@ -38,6 +38,14 @@ command_switch: dict = {
 }
 
 
+"""
+We will have one change directory handler.
+This change directory handler should be specific to a session.
+
+Author: Namah Shrestha
+"""
+
+
 async def socket_handler(websocket) -> None:
     try:
         """
@@ -66,6 +74,7 @@ async def socket_handler(websocket) -> None:
             exec_command: typing.Optional[str] = json_message.get(
                 constants.EXEC_COMMAND
             )
+            """ Now we need to calculate the current working directory """
             response: list = instance_obj.handle(exec_command)
             await websocket.send(json.dumps(response))
         else:

@@ -1,3 +1,4 @@
+journal.txt
 1. How to mock coroutines: https://stackoverflow.com/questions/29881236/how-to-mock-asyncio-coroutines
 2. Python's super method for multiple inheritance: https://stackoverflow.com/questions/3277367/how-does-pythons-super-work-with-multiple-inheritance
 3. Building async web sockets in Python: https://www.piesocket.com/blog/python-websocket
@@ -90,6 +91,8 @@ Problem with running the commands from the container:
 
 Problem with exec not running:
 ------------------------------
+NOTE: This problem did not exist until we ran the commands from within
+    another container. That is the issue.
 1. When we were running docker exec -it instead of getting the results we were getting an empty list and
     an error on docker saying that input device is not a tty.
 2. We looked online and found this: https://stackoverflow.com/questions/43099116/error-the-input-device-is-not-a-tty
@@ -147,3 +150,21 @@ FINALLY THE SOLUTION:
 3. Thats it.
 
 We will do a docker exec -w command. Every time.
+
+This approach will not work from now on:
+----------------------------------------
+1. We tried using this approach.
+    - We created a change directory command detector and parser.
+    - We even found a way to change curr_dir without changing the actual working directory.
+    - Next we tried maintaining the state for multiple requests through redis.
+2. The problem is the input and output.
+    - We cannot use this approach to simply listen to top commands and
+       editors like vim.
+    - For this we need to actually provide input to containers and 
+      monitor stdout or the actual terminal.
+    - For this we need to understand how input and output of docker exec works.
+3. We have found a couple of links to understand the same.
+    - https://medium.com/@BeNitinAgarwal/understanding-the-docker-internals-7ccb052ce9fe
+    - http://docker-saigon.github.io/post/Docker-Internals/
+    - Books: Docker Deep Dive
+    - Course PluralSight: https://app.pluralsight.com/course-player?clipId=8497796e-b975-4932-9209-14153d4a5604
